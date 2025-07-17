@@ -87,9 +87,9 @@ class AppState with ChangeNotifier {
         }
 
         final totalPages = jsonData['total_pages'];
-        final currentPageFromApi = jsonData['page'];
+        // final currentPageFromApi = jsonData['page'];
 
-        print('📦 Page $currentPageFromApi of $totalPages | Users: ${newUsers.length}');
+        // print('📦 Page $currentPageFromApi of $totalPages | Users: ${newUsers.length}');
 
         if (_currentPage >= totalPages || newUsers.isEmpty) {
           setHasMoreData(false); 
@@ -97,10 +97,10 @@ class AppState with ChangeNotifier {
           incrementPage(); 
         }
       } else {
-        print('Failed to fetch users: ${response.statusCode}');
+        // print('Failed to fetch users: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching users: $e');
+      // print('Error fetching users: $e');
     } finally {
       setLoading(false);
     }
