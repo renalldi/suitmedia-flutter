@@ -28,6 +28,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
       if (_scrollController.position.pixels >= 
           _scrollController.position.maxScrollExtent - 200) {
         final appState = Provider.of<AppState>(context, listen: false);
+        
         if (!appState.isLoading && appState.hasMoreData) {
           appState.fetchUsers();
         }

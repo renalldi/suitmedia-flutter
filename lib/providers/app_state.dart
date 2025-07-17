@@ -65,36 +65,39 @@ class AppState with ChangeNotifier {
     if (_isLoading) return;
 
     if (isRefresh) {
-      resetUsers();
+      resetUsers(); // Kosongkan user dan reset ke page 1
     }
 
     setLoading(true);
 
     try {
       final response = await http.get(
-        Uri.parse('https://reqres.in/api/users?page=$_currentPage&per_page=6'),
+        Uri.parse('https://reqres.in/api/users?page=$_currentPage&per_page=10'),
       );
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         final List<dynamic> userData = jsonData['data'];
         final List<User> newUsers = userData.map((json) => User.fromJson(json)).toList();
-        
+
         if (isRefresh) {
           setUsers(newUsers);
         } else {
           addUsers(newUsers);
         }
 
-        // Check if there's more data
         final totalPages = jsonData['total_pages'];
-        if (_currentPage >= totalPages) {
-          setHasMoreData(false);
-        }
+        final currentPageFromApi = jsonData['page'];
 
-        if (!isRefresh) {
-          incrementPage();
+        print('📦 Page $currentPageFromApi of $totalPages | Users: ${newUsers.length}');
+
+        if (_currentPage >= totalPages || newUsers.isEmpty) {
+          setHasMoreData(false); 
+        } else {
+          incrementPage(); 
         }
+      } else {
+        print('Failed to fetch users: ${response.statusCode}');
       }
     } catch (e) {
       print('Error fetching users: $e');
@@ -102,4 +105,5 @@ class AppState with ChangeNotifier {
       setLoading(false);
     }
   }
+
 }
