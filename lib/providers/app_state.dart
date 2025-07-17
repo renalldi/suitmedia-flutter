@@ -65,7 +65,7 @@ class AppState with ChangeNotifier {
     if (_isLoading) return;
 
     if (isRefresh) {
-      resetUsers(); // Kosongkan user dan reset ke page 1
+      resetUsers(); 
     }
 
     setLoading(true);
